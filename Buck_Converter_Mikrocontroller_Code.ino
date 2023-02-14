@@ -1,6 +1,10 @@
 void setup() {
-  // put your setup code here, to run once:
-
+TCCR1A = B10110010;
+TCCR1B = B00011001;
+ICR1 = 640;
+DDRB = B01100000;
+OCR1A = 320;
+OCR1B = OCR1A + 10; 
 }
 
 void loop() {
