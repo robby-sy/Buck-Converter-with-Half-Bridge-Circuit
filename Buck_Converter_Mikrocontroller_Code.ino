@@ -1,6 +1,10 @@
+#include <LiquidCrystal_I2C.h>
+
 bool currentPin,lastPin;
 unsigned long startDeb,endDeb;
 int Dutycycle;
+
+LiquidCrystal_I2C lcd(0x3f, 20, 4);
 
 void setup() {
   TCCR1A = B10110010;
@@ -11,10 +15,21 @@ void setup() {
   OCR1B = OCR1A + 10;
   PCICR = B00000001;
   PCMSK0 = B00000111;
+  lcd.init();
+  lcd.backlight();
+  lcd.setCursor(0,0);
+  lcd.print("Duty Cycle:");
+  lcd.setCursor(0,1);
+  lcd.print("OCR1A:");
 }
 
 void loop() {
-
+lcd.setCursor(11,0);
+lcd.print(Dutycycle);
+lcd.print(" ");
+lcd.setCursor(6,1);
+lcd.print(OCR1A);
+lcd.print(" ");
 }
 
 ISR(PCINT2_vect) {
