@@ -2,7 +2,7 @@
 
 bool currentPin,lastPin;
 unsigned long startDeb,endDeb;
-int Dutycycle;
+int Dutycycle,Data_Tegangan;
 
 LiquidCrystal_I2C lcd(0x3f, 20, 4);
 
@@ -24,18 +24,19 @@ void setup() {
 }
 
 void loop() {
+Data_Tegangan = analogRead(A9);
 lcd.setCursor(11,0);
 lcd.print(Dutycycle);
-lcd.print(" ");
+lcd.print("   ");
 lcd.setCursor(6,1);
-lcd.print(OCR1A);
-lcd.print(" ");
+lcd.print(Data_Tegangan);
+lcd.print("   ");
 }
 
-ISR(PCINT2_vect) {
-  currentPin = ((1 << 0)&PINB) >> 7;
+ISR(PCINT0_vect) {
+  currentPin = ((1 << 0)&PINB) >> 0;
   startDeb = micros();
-  if (startDeb - endDeb > 1000) {
+  if (startDeb - endDeb > 9000) {
     if (currentPin != lastPin) {
       if (((1 << 0)&PINB) >> 0 != ((1 << 1)&PINB) >> 1) {
         Dutycycle += 1;
